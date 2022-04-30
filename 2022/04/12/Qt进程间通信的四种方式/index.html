@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="简介qt提供了四种进程间通信的方式：  共享内存：qt提供的各个平台都有支持的进程间交互方式 TCP&#x2F;IP：本质上是同一台机器上的两个进程，一个充当服务端，一个充当客户端。两者通过网络协议进行通信。Qt 提供了 QNetworkAccessManager 对此进行支持。 D-Bus：freedesktop 组织开发的一种低开销、低延迟的 IPC 实现。Qt 提供了 QtDBus 模块，把">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt进程间通信的四种方式">
+<meta property="og:url" content="http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Radica Blogs">
+<meta property="og:description" content="简介qt提供了四种进程间通信的方式：  共享内存：qt提供的各个平台都有支持的进程间交互方式 TCP&#x2F;IP：本质上是同一台机器上的两个进程，一个充当服务端，一个充当客户端。两者通过网络协议进行通信。Qt 提供了 QNetworkAccessManager 对此进行支持。 D-Bus：freedesktop 组织开发的一种低开销、低延迟的 IPC 实现。Qt 提供了 QtDBus 模块，把">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-12T14:06:12.000Z">
+<meta property="article:modified_time" content="2022-04-12T14:26:55.979Z">
+<meta property="article:author" content="Radica">
+<meta property="article:tag" content="Qt">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Qt进程间通信的四种方式</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/03/30/CMake%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&text=Qt进程间通信的四种方式"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&is_video=false&description=Qt进程间通信的四种方式"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Qt进程间通信的四种方式&body=Check out this article: http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&name=Qt进程间通信的四种方式&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&t=Qt进程间通信的四种方式"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">2.2.</span> <span class="toc-text">开始通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-number">2.3.</span> <span class="toc-text">demo</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Qt进程间通信的四种方式
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Radica</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-12T14:06:12.000Z" itemprop="datePublished">2022-04-12</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Qt/" rel="tag">Qt</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>qt提供了四种进程间通信的方式：</p>
+<ul>
+<li>共享内存：qt提供的各个平台都有支持的进程间交互方式</li>
+<li>TCP&#x2F;IP：本质上是同一台机器上的两个进程，一个充当服务端，一个充当客户端。两者通过网络协议进行通信。Qt 提供了 QNetworkAccessManager 对此进行支持。</li>
+<li>D-Bus：freedesktop 组织开发的一种低开销、低延迟的 IPC 实现。Qt 提供了 QtDBus 模块，把信号槽机制扩展到进程级别（因此我们前面强调是“普通的”信号槽机制无法实现 IPC），使得开发者可以在一个进程中发出信号，由其它进程的槽函数响应信号。</li>
+<li>QCOP：QCOP(Qt COmmunication Protocol)是 Qt 内部的一种通信协议，用于不同的客户端之间在同一地址空间内部或者不同的进程之间的通信。目前，这种机制只用于 Qt for Embedded Linux 版本。</li>
+</ul>
+<h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p>头文件是QSharedMemory</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>实例化QSharedMemory对象，并指定关键字key<br>有两种方式：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* KEY_SHARED_MEMORY = <span class="string">&quot;share&quot;</span>;</span><br><span class="line"><span class="keyword">auto</span> s_memory = <span class="keyword">new</span> <span class="built_in">QSharedMemory</span>(KEY_SHARED_MEMORY, <span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<p>另一种：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span>* KEY_SHARED_MEMORY = <span class="string">&quot;share&quot;</span>;</span><br><span class="line">QSharedMemory* s_memory =  <span class="keyword">new</span> <span class="built_in">QSharedMemory</span>();</span><br><span class="line">s_memory-&gt;<span class="built_in">setKey</span>(KEY_SHARED_MEMORY, <span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="开始通信"><a href="#开始通信" class="headerlink" title="开始通信"></a>开始通信</h2><ol>
+<li>进程A写：</li>
+</ol>
+<ul>
+<li>检测该进程是否连接到共享内存段，如果连接，则将该进程与共享内存段分离</li>
+<li>从系统足够大的内存中得到一个新的共享内存段</li>
+<li>锁定该共享内存段，以阻止第二个对话框进程访问</li>
+<li>开始进行写操作</li>
+<li>将共享内存段解锁，然后第二个对话框进程就可以访问了</li>
+</ul>
+<ol start="2">
+<li>进程B读：</li>
+</ol>
+<ul>
+<li>将该进程与进程A创建的共享内存段绑定</li>
+<li>锁定共享内存段</li>
+<li>开始进行读操作</li>
+<li>将共享内存段解锁，然后将该进程与共享内存段分离<h2 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h2>写：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">BoardEditorState_SharedCopy::writeSharedMemory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( mSharedMemory-&gt;<span class="built_in">isAttached</span>() ) &#123;</span><br><span class="line">        <span class="comment">// 与主进程分离</span></span><br><span class="line">        <span class="keyword">if</span> ( !mSharedMemory-&gt;<span class="built_in">detach</span>() ) &#123;</span><br><span class="line">            std::cout &lt;&lt; mSharedMemory-&gt;<span class="built_in">error</span>() &lt;&lt; std::endl;</span><br><span class="line">            std::cout &lt;&lt; mSharedMemory-&gt;<span class="built_in">errorString</span>().<span class="built_in">toStdString</span>() &lt;&lt; std::endl;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    QBuffer buffer;</span><br><span class="line">    buffer.<span class="built_in">open</span>(QBuffer::ReadWrite);</span><br><span class="line">    <span class="function">QDataStream <span class="title">out</span><span class="params">(&amp;buffer)</span></span>;</span><br><span class="line">    out &lt;&lt; <span class="built_in">serialize</span>();</span><br><span class="line">    <span class="type">int</span> size = buffer.<span class="built_in">size</span>();</span><br><span class="line">    <span class="comment">// 创建共享内存</span></span><br><span class="line">    <span class="keyword">if</span> ( !mSharedMemory-&gt;<span class="built_in">create</span>(size) ) &#123;</span><br><span class="line">        std::cout &lt;&lt; mSharedMemory-&gt;<span class="built_in">error</span>() &lt;&lt; std::endl;</span><br><span class="line">        std::cout &lt;&lt; mSharedMemory-&gt;<span class="built_in">errorString</span>().<span class="built_in">toStdString</span>() &lt;&lt; std::endl;</span><br><span class="line">        <span class="comment">// return;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 上锁</span></span><br><span class="line">    mSharedMemory-&gt;<span class="built_in">lock</span>();</span><br><span class="line">    <span class="type">char</span>*       to = (<span class="type">char</span>*)mSharedMemory-&gt;<span class="built_in">data</span>();</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* from = buffer.<span class="built_in">data</span>().<span class="built_in">data</span>();</span><br><span class="line">    <span class="built_in">memcpy</span>(to, from, <span class="built_in">qMin</span>(mSharedMemory-&gt;<span class="built_in">size</span>(), size));</span><br><span class="line">    <span class="comment">// 解锁</span></span><br><span class="line">    mSharedMemory-&gt;<span class="built_in">unlock</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+读：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">BoardEditorState_SharedCopy::readSharedMemory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 上锁</span></span><br><span class="line">    mSharedMemory-&gt;<span class="built_in">lock</span>();</span><br><span class="line">    <span class="comment">// 共享内存与主进程绑定</span></span><br><span class="line">    <span class="keyword">if</span> ( !mSharedMemory-&gt;<span class="built_in">attach</span>() ) &#123;</span><br><span class="line">        std::cout &lt;&lt; mSharedMemory-&gt;<span class="built_in">errorString</span>().<span class="built_in">toStdString</span>() &lt;&lt; std::endl;</span><br><span class="line">    &#125;</span><br><span class="line">    QBuffer     buffer;</span><br><span class="line">    <span class="function">QDataStream <span class="title">in</span><span class="params">(&amp;buffer)</span></span>;</span><br><span class="line"></span><br><span class="line">    buffer.<span class="built_in">setData</span>((<span class="type">char</span>*)mSharedMemory-&gt;<span class="built_in">constData</span>(), mSharedMemory-&gt;<span class="built_in">size</span>());</span><br><span class="line">    buffer.<span class="built_in">open</span>(QBuffer::ReadOnly);</span><br><span class="line">    QByteArray bytearray;</span><br><span class="line">    in &gt;&gt; bytearray;</span><br><span class="line">    SExpression se = SExpression::<span class="built_in">parse</span>(bytearray, <span class="built_in">FilePath</span>());</span><br><span class="line">    <span class="keyword">if</span> ( se.<span class="built_in">tryGetChildByPath</span>(<span class="string">&quot;shape&quot;</span>) ) &#123;</span><br><span class="line">        SExpression s = se.<span class="built_in">getChildByPath</span>(<span class="string">&quot;shape&quot;</span>);</span><br><span class="line">        <span class="keyword">auto</span>&amp;       board = Holder::<span class="built_in">getActiveBoard</span>();</span><br><span class="line">        <span class="keyword">auto</span>*       item = <span class="keyword">new</span> <span class="built_in">BI_Shape</span>(board, s);</span><br><span class="line">        board.<span class="built_in">addItem</span>(item);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 解锁</span></span><br><span class="line">    mSharedMemory-&gt;<span class="built_in">unlock</span>();</span><br><span class="line">    <span class="comment">// 与主进程分离</span></span><br><span class="line">    mSharedMemory-&gt;<span class="built_in">detach</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">共享内存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.1.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">2.2.</span> <span class="toc-text">开始通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#demo"><span class="toc-number">2.3.</span> <span class="toc-text">demo</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&text=Qt进程间通信的四种方式"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&is_video=false&description=Qt进程间通信的四种方式"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Qt进程间通信的四种方式&body=Check out this article: http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&title=Qt进程间通信的四种方式"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&name=Qt进程间通信的四种方式&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2022/04/12/Qt%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F/&t=Qt进程间通信的四种方式"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2021-2022
+            Radica
+  </div>
+  <div class="footer-right">
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <span id="jinrishici-sentence">正在加载今日诗词....</span>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

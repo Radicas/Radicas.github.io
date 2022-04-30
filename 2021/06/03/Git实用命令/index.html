@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="基本命令git initgit clonegit pull&#x2F;pushgit fetchgit rebase&#x2F;mergegit addgit commitgit checkoutgit reset进阶用法commit常用说明feat：新功能（feature）fix&#x2F;to：修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUGfix：产生diff并自动修复此问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git实用命令">
+<meta property="og:url" content="http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Radica Blogs">
+<meta property="og:description" content="基本命令git initgit clonegit pull&#x2F;pushgit fetchgit rebase&#x2F;mergegit addgit commitgit checkoutgit reset进阶用法commit常用说明feat：新功能（feature）fix&#x2F;to：修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUGfix：产生diff并自动修复此问题">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-03T13:57:52.000Z">
+<meta property="article:modified_time" content="2022-03-03T14:41:48.900Z">
+<meta property="article:author" content="Radica">
+<meta property="article:tag" content="Tools">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Git实用命令</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/11/27/Mac%E4%B8%8B%E9%83%A8%E7%BD%B2hexo/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&text=Git实用命令"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&is_video=false&description=Git实用命令"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git实用命令&body=Check out this article: http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&name=Git实用命令&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&t=Git实用命令"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">基本命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-init"><span class="toc-number">1.0.1.</span> <span class="toc-text">git init</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-clone"><span class="toc-number">1.0.2.</span> <span class="toc-text">git clone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-pull-x2F-push"><span class="toc-number">1.0.3.</span> <span class="toc-text">git pull&#x2F;push</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-fetch"><span class="toc-number">1.0.4.</span> <span class="toc-text">git fetch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-rebase-x2F-merge"><span class="toc-number">1.0.5.</span> <span class="toc-text">git rebase&#x2F;merge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-add"><span class="toc-number">1.0.6.</span> <span class="toc-text">git add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-commit"><span class="toc-number">1.0.7.</span> <span class="toc-text">git commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-checkout"><span class="toc-number">1.0.8.</span> <span class="toc-text">git checkout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-reset"><span class="toc-number">1.0.9.</span> <span class="toc-text">git reset</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">进阶用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#commit%E5%B8%B8%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">2.1.</span> <span class="toc-text">commit常用说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Git实用命令
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Radica</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-06-03T13:57:52.000Z" itemprop="datePublished">2021-06-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Tools/" rel="tag">Tools</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><h3 id="git-init"><a href="#git-init" class="headerlink" title="git init"></a>git init</h3><h3 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h3><h3 id="git-pull-x2F-push"><a href="#git-pull-x2F-push" class="headerlink" title="git pull&#x2F;push"></a>git pull&#x2F;push</h3><h3 id="git-fetch"><a href="#git-fetch" class="headerlink" title="git fetch"></a>git fetch</h3><h3 id="git-rebase-x2F-merge"><a href="#git-rebase-x2F-merge" class="headerlink" title="git rebase&#x2F;merge"></a>git rebase&#x2F;merge</h3><h3 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h3><h3 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h3><h3 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h3><h3 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h3><h1 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h1><h2 id="commit常用说明"><a href="#commit常用说明" class="headerlink" title="commit常用说明"></a>commit常用说明</h2><p>feat：新功能（feature）<br>fix&#x2F;to：修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUG<br>fix：产生diff并自动修复此问题。适合于一次提交直接修复问题<br>to：只产生diff不自动修复此问题。适合于多次提交。最终修复问题提交时使用fix<br>docs：文档（documentation）<br>style：格式（不影响代码运行的变动）<br>refactor：重构（即不是新增功能，也不是修改bug的代码变动）<br>perf：优化相关，比如提升性能、体验<br>test：增加测试<br>chore：构建过程或辅助工具的变动<br>revert：回滚到上一个版本<br>merge：代码合并<br>sync：同步主线或分支的Bug</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>本地新建仓库推送到远程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git remote add origin &lt;远程地址&gt;</span><br></pre></td></tr></table></figure>
+
+<p>创建远程分支并推送</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;分支名&gt;	//创建本地分支</span><br><span class="line">git push origin &lt;分支名&gt;	//推送分支到远程</span><br><span class="line">git branch --set-upstream-to=origin/&lt;分支名&gt;	//远程分支和本地分支关联</span><br></pre></td></tr></table></figure>
+
+<p>切换远程分支</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote rm origin</span><br><span class="line">git remote add origin &lt;远程地址&gt;</span><br></pre></td></tr></table></figure>
+
+<p>删除分支</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -d localBranchName //删除本地分支</span><br><span class="line">git push origin --delete remoteBranchName //删除远程分支</span><br></pre></td></tr></table></figure>
+
+<p>合并多个commit到一个,将不显示的pick替换成f即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -i &lt;HASH&gt;</span><br></pre></td></tr></table></figure>
+
+<p>撤销rebase</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --abort</span><br></pre></td></tr></table></figure>
+
+<p>丢弃stash</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash drop n // 丢弃第n个stash</span><br></pre></td></tr></table></figure>
+
+<p>变更远程地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin http://192.168.1.70:3000/RedEDA/RedEDA.git</span><br></pre></td></tr></table></figure>
+
+<p>查看远程信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git branch -r	//查看所有远程分支</span><br><span class="line">git branch -a	//查看所有远程和本地分支</span><br><span class="line">git remote show origin //显示远程信息</span><br><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<p>清除远程已经删掉的分支</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote prune origin</span><br></pre></td></tr></table></figure>
+
+<p>修改用户名和密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;Radica&quot;</span></span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git config --global user.email z1176814811@gmail.com</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git config -l // 查看配置</span></span><br></pre></td></tr></table></figure>
+
+<p>配置及取消代理</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git config --global https.proxy http://127.0.0.1:7890</span><br><span class="line">git config --global https.proxy https://127.0.0.1:7890</span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">基本命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#git-init"><span class="toc-number">1.0.1.</span> <span class="toc-text">git init</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-clone"><span class="toc-number">1.0.2.</span> <span class="toc-text">git clone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-pull-x2F-push"><span class="toc-number">1.0.3.</span> <span class="toc-text">git pull&#x2F;push</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-fetch"><span class="toc-number">1.0.4.</span> <span class="toc-text">git fetch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-rebase-x2F-merge"><span class="toc-number">1.0.5.</span> <span class="toc-text">git rebase&#x2F;merge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-add"><span class="toc-number">1.0.6.</span> <span class="toc-text">git add</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-commit"><span class="toc-number">1.0.7.</span> <span class="toc-text">git commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-checkout"><span class="toc-number">1.0.8.</span> <span class="toc-text">git checkout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#git-reset"><span class="toc-number">1.0.9.</span> <span class="toc-text">git reset</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">进阶用法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#commit%E5%B8%B8%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">2.1.</span> <span class="toc-text">commit常用说明</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">3.</span> <span class="toc-text">其他</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&text=Git实用命令"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&is_video=false&description=Git实用命令"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git实用命令&body=Check out this article: http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&title=Git实用命令"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&name=Git实用命令&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2021/06/03/Git%E5%AE%9E%E7%94%A8%E5%91%BD%E4%BB%A4/&t=Git实用命令"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2021-2022
+            Radica
+  </div>
+  <div class="footer-right">
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <span id="jinrishici-sentence">正在加载今日诗词....</span>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
