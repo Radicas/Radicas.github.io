@@ -14,7 +14,7 @@
 <meta property="og:description" content="基本命令git initgit clonegit pull&#x2F;pushgit fetchgit rebase&#x2F;mergegit addgit commitgit checkoutgit reset进阶用法commit常用说明feat：新功能（feature）fix&#x2F;to：修复bug，可以是QA发现的BUG，也可以是研发自己发现的BUGfix：产生diff并自动修复此问题">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-06-03T13:57:52.000Z">
-<meta property="article:modified_time" content="2022-03-03T14:41:48.900Z">
+<meta property="article:modified_time" content="2022-05-16T14:04:20.050Z">
 <meta property="article:author" content="Radica">
 <meta property="article:tag" content="Tools">
 <meta name="twitter:card" content="summary">
@@ -176,6 +176,9 @@
 
 <p>清除远程已经删掉的分支</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote prune origin</span><br></pre></td></tr></table></figure>
+
+<p>凭证存储，如vscode每次操作要登陆</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
 
 <p>修改用户名和密码</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;Radica&quot;</span></span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git config --global user.email z1176814811@gmail.com</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash">git config -l // 查看配置</span></span><br></pre></td></tr></table></figure>
