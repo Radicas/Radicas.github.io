@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="解压与安装将压缩包上传至服务器的&#x2F;home&#x2F;test&#x2F;SoftWare目录以RedHawk_Linux64e7_V2022R1.2.tar.gz为例解压： 1tar -xzvf RedHawk_Linux64e7_V2022R1.2.tar.gz 可以得到名为 RedHawk_Linux64e7_V2022R1.2 的文件夹进入该文件夹，执行setup.sh文件 1b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redhawk安装及Linux使用指南">
+<meta property="og:url" content="http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Radica Blogs">
+<meta property="og:description" content="解压与安装将压缩包上传至服务器的&#x2F;home&#x2F;test&#x2F;SoftWare目录以RedHawk_Linux64e7_V2022R1.2.tar.gz为例解压： 1tar -xzvf RedHawk_Linux64e7_V2022R1.2.tar.gz 可以得到名为 RedHawk_Linux64e7_V2022R1.2 的文件夹进入该文件夹，执行setup.sh文件 1b">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-17T10:27:01.000Z">
+<meta property="article:modified_time" content="2022-05-17T10:56:12.318Z">
+<meta property="article:author" content="Radica">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Redhawk安装及Linux使用指南</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2022/05/14/Window%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6Linux%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&text=Redhawk安装及Linux使用指南"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&is_video=false&description=Redhawk安装及Linux使用指南"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Redhawk安装及Linux使用指南&body=Check out this article: http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&name=Redhawk安装及Linux使用指南&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&t=Redhawk安装及Linux使用指南"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">解压与安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8Linux%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">常用Linux命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ls-gt-%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%8A%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.1.</span> <span class="toc-text">ls -&gt; 列出所有文件及文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cd-gt-%E6%94%B9%E5%8F%98%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">cd -&gt; 改变目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwd-gt-%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E6%89%80%E5%9C%A8%E8%B7%AF%E5%BE%84"><span class="toc-number">2.3.</span> <span class="toc-text">pwd -&gt; 显示当前所在路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#x2F-lt-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%8D-gt-gt-%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.4.</span> <span class="toc-text">.&#x2F;&lt;可执行文件名&gt; -&gt; 运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#su-root-gt-%E5%88%87%E6%8D%A2%E7%AE%A1%E7%90%86%E5%91%98%E8%B4%A6%E6%88%B7"><span class="toc-number">2.5.</span> <span class="toc-text">su root -&gt; 切换管理员账户</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Redhawk安装及Linux使用指南
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Radica</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-17T10:27:01.000Z" itemprop="datePublished">2022-05-17</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="解压与安装"><a href="#解压与安装" class="headerlink" title="解压与安装"></a>解压与安装</h2><p>将压缩包上传至服务器的&#x2F;home&#x2F;test&#x2F;SoftWare目录<br>以RedHawk_Linux64e7_V2022R1.2.tar.gz为例<br>解压：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf RedHawk_Linux64e7_V2022R1.2.tar.gz</span><br></pre></td></tr></table></figure>
+<p>可以得到名为 RedHawk_Linux64e7_V2022R1.2 的文件夹<br>进入该文件夹，执行setup.sh文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash setup.sh</span><br></pre></td></tr></table></figure>
+<p>提示输入安装后的路径，填入解压后的文件夹路径即可</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/test/SoftWare/RedHawk_Linux64e7_V2022R1.2</span><br></pre></td></tr></table></figure>
+<p>软件部分的安装就算完成了</p>
+<h2 id="常用Linux命令"><a href="#常用Linux命令" class="headerlink" title="常用Linux命令"></a>常用Linux命令</h2><p>详细命令，可参考<a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-command-manual.html">菜鸟教程</a></p>
+<h3 id="ls-gt-列出所有文件及文件夹"><a href="#ls-gt-列出所有文件及文件夹" class="headerlink" title="ls -&gt; 列出所有文件及文件夹"></a>ls -&gt; 列出所有文件及文件夹</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">Applications Desktop      Documents    Downloads    Library      Movies       </span><br><span class="line">Music        Pictures     Public       Study        Sunlogin     Work</span><br></pre></td></tr></table></figure>
+<h3 id="cd-gt-改变目录"><a href="#cd-gt-改变目录" class="headerlink" title="cd -&gt; 改变目录"></a>cd -&gt; 改变目录</h3><p>进入Work目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">cd</span> Work</span></span><br><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">ls</span></span></span><br><span class="line">EDA     Learn   Repos   Tools   redhawk</span><br></pre></td></tr></table></figure>
+<p>进入上一级目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">cd</span> ..</span></span><br></pre></td></tr></table></figure>
+<p>进入指定目录，要输入该目录的绝对路径</p>
+<h3 id="pwd-gt-显示当前所在路径"><a href="#pwd-gt-显示当前所在路径" class="headerlink" title="pwd -&gt; 显示当前所在路径"></a>pwd -&gt; 显示当前所在路径</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash"><span class="built_in">pwd</span></span> </span><br><span class="line">/Users/radica/Work</span><br></pre></td></tr></table></figure>
+<h3 id="x2F-lt-可执行文件名-gt-gt-运行程序"><a href="#x2F-lt-可执行文件名-gt-gt-运行程序" class="headerlink" title=".&#x2F;&lt;可执行文件名&gt; -&gt; 运行程序"></a>.&#x2F;&lt;可执行文件名&gt; -&gt; 运行程序</h3><p>进入redhawk下的bin目录，这里有所有的可执行文件<br>运行名为redhawk的程序</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">./redhawk</span></span><br></pre></td></tr></table></figure>
+<p>如果不能执行，提示没有权限，需要切换到管理员账户</p>
+<h3 id="su-root-gt-切换管理员账户"><a href="#su-root-gt-切换管理员账户" class="headerlink" title="su root -&gt; 切换管理员账户"></a>su root -&gt; 切换管理员账户</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$ </span><span class="language-bash">su root</span></span><br><span class="line">password: </span><br></pre></td></tr></table></figure>
+<p>要求输入密码，当前的密码为: jiayanredhawk<br>输入密码时密码是隐藏的，不会显示</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%8E%8B%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">解压与安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8Linux%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">常用Linux命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ls-gt-%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%8A%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.1.</span> <span class="toc-text">ls -&gt; 列出所有文件及文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cd-gt-%E6%94%B9%E5%8F%98%E7%9B%AE%E5%BD%95"><span class="toc-number">2.2.</span> <span class="toc-text">cd -&gt; 改变目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pwd-gt-%E6%98%BE%E7%A4%BA%E5%BD%93%E5%89%8D%E6%89%80%E5%9C%A8%E8%B7%AF%E5%BE%84"><span class="toc-number">2.3.</span> <span class="toc-text">pwd -&gt; 显示当前所在路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#x2F-lt-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%90%8D-gt-gt-%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="toc-number">2.4.</span> <span class="toc-text">.&#x2F;&lt;可执行文件名&gt; -&gt; 运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#su-root-gt-%E5%88%87%E6%8D%A2%E7%AE%A1%E7%90%86%E5%91%98%E8%B4%A6%E6%88%B7"><span class="toc-number">2.5.</span> <span class="toc-text">su root -&gt; 切换管理员账户</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&text=Redhawk安装及Linux使用指南"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&is_video=false&description=Redhawk安装及Linux使用指南"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Redhawk安装及Linux使用指南&body=Check out this article: http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&title=Redhawk安装及Linux使用指南"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&name=Redhawk安装及Linux使用指南&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://radicas.github.io/2022/05/17/Redhawk%E5%AE%89%E8%A3%85%E5%8F%8ALinux%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/&t=Redhawk安装及Linux使用指南"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+      
+        
+          2021-2022
+            Radica
+  </div>
+  <div class="footer-right">
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+    <span id="jinrishici-sentence">正在加载今日诗词....</span>
+    <script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+  </div>
+</footer>
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
